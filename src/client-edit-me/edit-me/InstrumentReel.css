@@ -1,3 +1,34 @@
 /**
  * ✅ You can edit this file to add your own styles.
  */
+
+.instrumentReel {
+  display: flex;
+  flex-flow: row;
+  border: solid;
+  border-color: #505050;
+  border-width: 1px;
+  overflow: hidden;
+}
+
+.iconImg {
+  width: 25px;
+  height: 25px;
+  border-radius: 25px;
+  margin-right: 5px;
+}
+
+.nameBlock {
+  margin-right: 5px;
+}
+
+.instrumentRectangle {
+  display: flex;
+  flex-flow: row;
+  white-space: nowrap;
+  padding: 10px;
+  align-items: center;
+  border-right: solid;
+  border-color: #505050;
+  background-color: #252525;
+}
