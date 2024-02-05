@@ -2,13 +2,17 @@
  * ✅ You can edit this file to add your own styles.
  */
 
+.reelWrapper {
+  overflow: hidden;
+}
+
 .instrumentReel {
   display: flex;
   flex-flow: row;
   border: solid;
   border-color: #505050;
   border-width: 1px;
-  overflow: hidden;
+  transition: margin-left 0.3s ease-in-out;
 }
 
 .iconImg {

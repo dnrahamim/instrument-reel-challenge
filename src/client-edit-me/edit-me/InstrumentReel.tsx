@@ -8,7 +8,7 @@
 import { Instrument, InstrumentSymbol } from "../../common-leave-me";
 import { InstrumentSocketClient } from "./InstrumentSocketClient";
 import "./InstrumentReel.css";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 /**
  * ❌ Please do not edit this
@@ -83,17 +83,38 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
    * ❌ Please do not edit this
    */
   const instruments = useInstruments(instrumentSymbols);
-
+  const reelRef = useRef(null as HTMLDivElement | null);
+  const marginRef = useRef(0);
+  const speed = 0.2;
   /**
    * ✅ You can edit from here down in this component.
    * Please feel free to add more components to this file or other files if you want to.
    */
 
+  const moveDivLeft = () => {
+    if (reelRef.current) {
+      reelRef.current.style.marginLeft = `-${marginRef.current}px`;
+      marginRef.current = marginRef.current + speed;
+    }
+  };
+
+  useEffect(() => {
+    setInterval(() => {
+      requestAnimationFrame(moveDivLeft);
+    }, 0);
+  });
+
+  const instrumentRectangles = useMemo(() => {
+    return instruments.map((instrument) => (
+      <InstrumentRectangle key={instrument.name} {...{ instrument }} />
+    ));
+  }, [JSON.stringify(instruments.map((i) => i.code))]);
+
   return (
-    <div className="instrumentReel">
-      {instruments.map((instrument) => (
-        <InstrumentRectangle key={instrument.name} {...{ instrument }} />
-      ))}
+    <div className="reelWrapper">
+      <div ref={reelRef} className="instrumentReel">
+        {instrumentRectangles}
+      </div>
     </div>
   );
 }
