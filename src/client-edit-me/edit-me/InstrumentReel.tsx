@@ -83,6 +83,7 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
    * ❌ Please do not edit this
    */
   const instruments = useInstruments(instrumentSymbols);
+  const containerRef = useRef(null as HTMLDivElement | null);
   const reelRef = useRef(null as HTMLDivElement | null);
   const marginRef = useRef(0);
   const speed = 0.2;
@@ -92,17 +93,23 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
    */
 
   const moveDivLeft = () => {
-    if (reelRef.current) {
+    if (reelRef.current && containerRef.current) {
       reelRef.current.style.marginLeft = `-${marginRef.current}px`;
       marginRef.current = marginRef.current + speed;
+
+      var containerRect = containerRef.current.getBoundingClientRect();
+      var reelRect = reelRef.current.getBoundingClientRect();
+      if (reelRect.right <= containerRect.left) {
+        marginRef.current = 0;
+      }
     }
   };
 
   useEffect(() => {
     setInterval(() => {
       requestAnimationFrame(moveDivLeft);
-    }, 0);
-  });
+    });
+  }, []);
 
   const instrumentRectangles = useMemo(() => {
     return instruments.map((instrument) => (
@@ -111,7 +118,7 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
   }, [JSON.stringify(instruments.map((i) => i.code))]);
 
   return (
-    <div className="reelWrapper">
+    <div ref={containerRef} className="reelWrapper">
       <div ref={reelRef} className="instrumentReel">
         {instrumentRectangles}
       </div>
