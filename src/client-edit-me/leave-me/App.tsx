@@ -61,6 +61,29 @@ function App() {
     setInstrumentReels((prev) => prev.filter((item) => item.id !== id));
   };
 
+  const XButton = ({ id }: { id: string }) => (
+    <span
+      role="button"
+      className="tt-wrapper__close"
+      onClick={() => deleteHandler(id)}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="w-6 h-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+    </span>
+  );
+
   return (
     <div className="app">
       <form ref={formRef} onSubmit={submitHandler}>
@@ -77,26 +100,7 @@ function App() {
       {instrumentReels.map((instrumentReel, i) => (
         <div key={i} className="tt-wrapper">
           <InstrumentReel {...instrumentReel} />
-          <span
-            role="button"
-            className="tt-wrapper__close"
-            onClick={() => deleteHandler(instrumentReel.id)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </span>
+          <XButton id={instrumentReel.id} />
         </div>
       ))}
     </div>
