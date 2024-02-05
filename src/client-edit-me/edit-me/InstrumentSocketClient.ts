@@ -55,9 +55,58 @@ export class InstrumentSocketClient {
      * ❌ Please do not edit this private property assignment
      */
     this._socket = new WebSocket("ws://localhost:3000/ws");
+  }
 
-    /**
-     * ✅ You can edit from here down 👇
-     */
+  /**
+   * ✅ You can edit from here down 👇
+   */
+
+  subscribe({
+    instrumentSymbols,
+    setInstruments,
+  }: {
+    instrumentSymbols: InstrumentSymbol[];
+    setInstruments: React.Dispatch<React.SetStateAction<Instrument[]>>;
+  }) {
+    const sendSubscribe = () => {
+      this._socket.send(
+        JSON.stringify({
+          ...{
+            type: "subscribe",
+            instrumentSymbols,
+          },
+        } as WebSocketClientMessageJson) as WebSocketMessage
+      );
+    };
+    if ((this._socket.readyState as WebSocketReadyState) === 1) {
+      sendSubscribe();
+    } else {
+      this._socket.addEventListener("open", sendSubscribe);
+    }
+
+    // Listen for messages
+    this._socket.addEventListener("message", (event) => {
+      try {
+        const data = JSON.parse(event.data) as WebSocketServerMessageJson;
+        setInstruments(data.instruments);
+      } catch (error) {
+        reportError({ message: String(error) });
+      }
+    });
+  }
+
+  unsubscribe({
+    instrumentSymbols,
+  }: {
+    instrumentSymbols: InstrumentSymbol[];
+  }) {
+    this._socket.send(
+      JSON.stringify({
+        ...{
+          type: "unsubscribe",
+          instrumentSymbols,
+        },
+      } as WebSocketClientMessageJson) as WebSocketMessage
+    );
   }
 }
