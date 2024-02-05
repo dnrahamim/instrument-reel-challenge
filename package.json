@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:server": "nodemon --esm src/server-leave-me/index.ts",
+    "dev:server": "nodemon src/server-leave-me/index.ts",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "start:dev": "concurrently \"npm run dev:server\" \"npm run dev\""
