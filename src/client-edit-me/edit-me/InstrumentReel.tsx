@@ -5,10 +5,11 @@
 /**
  * ✅ You can add/edit these imports
  */
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Instrument, InstrumentSymbol } from "../../common-leave-me";
 import { InstrumentSocketClient } from "./InstrumentSocketClient";
+import { IconImage } from "./IconImage";
 import "./InstrumentReel.css";
-import { useEffect, useMemo, useRef, useState } from "react";
 
 /**
  * ❌ Please do not edit this
@@ -35,35 +36,6 @@ function useInstruments(instrumentSymbols: InstrumentSymbol[]) {
   return instruments;
 }
 
-const IconImage = ({ code }: { code: InstrumentSymbol }) => {
-  let src = "";
-  switch (code) {
-    case "BTC":
-      src = "crypto/BTC.svg";
-      break;
-    case "ETH":
-      src = "crypto/ETH.svg";
-      break;
-    case "SP500":
-      src = "indicies/SP500.svg";
-      break;
-    case "US100":
-      src = "indicies/US100.svg";
-    case "AAPL":
-      src = "stocks/AAPL.svg";
-      break;
-    case "TSLA":
-      src = "stocks/TSLA.svg";
-      break;
-    case "EURUSD":
-      src = "forex/EUR.svg";
-      break;
-    default:
-    // code block
-  }
-  return <img className="iconImg" src={src} />;
-};
-
 const InstrumentRectangle = ({ instrument }: { instrument: Instrument }) => {
   return (
     <div className="instrumentRectangle">
@@ -72,6 +44,14 @@ const InstrumentRectangle = ({ instrument }: { instrument: Instrument }) => {
       <div>{instrument.lastQuote}</div>
     </div>
   );
+};
+
+const useMakeSubReel = (instruments: Instrument[]) => {
+  return useMemo(() => {
+    return instruments.map((instrument) => (
+      <InstrumentRectangle key={instrument.name} {...{ instrument }} />
+    ));
+  }, [JSON.stringify(instruments.map((i) => i.code))]);
 };
 
 export interface InstrumentReelProps {
@@ -88,14 +68,14 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
    * Please feel free to add more components to this file or other files if you want to.
    */
   const containerRef = useRef(null as HTMLDivElement | null);
-  const reelRef = useRef(null as HTMLDivElement | null);
+  const wrapperRef = useRef(null as HTMLDivElement | null);
   const leaderRef = useRef(null as HTMLDivElement | null);
   const marginRef = useRef(0);
   const speed = 0.2; // pixels per ms
 
   const advanceReelWrapper = () => {
-    if (reelRef.current && containerRef.current && leaderRef.current) {
-      reelRef.current.style.marginLeft = `-${marginRef.current}px`;
+    if (wrapperRef.current && containerRef.current && leaderRef.current) {
+      wrapperRef.current.style.marginLeft = `-${marginRef.current}px`;
       marginRef.current = marginRef.current + speed;
 
       var containerRect = containerRef.current.getBoundingClientRect();
@@ -115,21 +95,12 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
     };
   }, []);
 
-  const leaderRectangles = useMemo(() => {
-    return instruments.map((instrument) => (
-      <InstrumentRectangle key={instrument.name} {...{ instrument }} />
-    ));
-  }, [JSON.stringify(instruments.map((i) => i.code))]);
-
-  const tailRectangles = useMemo(() => {
-    return instruments.map((instrument) => (
-      <InstrumentRectangle key={instrument.name} {...{ instrument }} />
-    ));
-  }, [JSON.stringify(instruments.map((i) => i.code))]);
+  const leaderRectangles = useMakeSubReel(instruments);
+  const tailRectangles = useMakeSubReel(instruments);
 
   return (
     <div ref={containerRef} className="instrumentReel">
-      <div ref={reelRef} className="wrapperForBothSubReels">
+      <div ref={wrapperRef} className="wrapperForBothSubReels">
         <div className="subReel" ref={leaderRef}>
           {leaderRectangles}
         </div>
