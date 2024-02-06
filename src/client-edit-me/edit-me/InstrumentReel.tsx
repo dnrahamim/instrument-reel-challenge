@@ -125,12 +125,12 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
   }, [JSON.stringify(instruments.map((i) => i.code))]);
 
   return (
-    <div ref={containerRef} className="reelWrapper">
-      <div ref={reelRef} className="instrumentReel">
-        <div className="instrumentReel" ref={leaderRef}>
+    <div ref={containerRef} className="instrumentReel">
+      <div ref={reelRef} className="wrapperForBothSubReels">
+        <div className="subReel" ref={leaderRef}>
           {instrumentRectangles}
         </div>
-        <div className="instrumentReel">{tailRectangles}</div>
+        <div className="subReel">{tailRectangles}</div>
       </div>
     </div>
   );

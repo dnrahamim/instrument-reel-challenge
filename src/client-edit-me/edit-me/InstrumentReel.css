@@ -2,11 +2,16 @@
  * ✅ You can edit this file to add your own styles.
  */
 
-.reelWrapper {
+.instrumentReel {
   overflow: hidden;
 }
 
-.instrumentReel {
+.wrapperForBothSubReels {
+  display: flex;
+  flex-flow: row;
+}
+
+.subReel {
   display: flex;
   flex-flow: row;
   border: solid;
