@@ -87,8 +87,8 @@ export class InstrumentSocketClient {
     const myListener = (event: MessageEvent<any>) => {
       try {
         const data = JSON.parse(event.data) as WebSocketServerMessageJson;
-        const filteredInstruments = data.instruments.filter((instrument) =>
-          instrumentSymbols.indexOf(instrument.code)
+        const filteredInstruments = data.instruments.filter(
+          (instrument) => instrumentSymbols.indexOf(instrument.code) > -1
         );
         setInstruments(filteredInstruments);
       } catch (error) {

@@ -61,6 +61,7 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
    * ❌ Please do not edit this
    */
   const instruments = useInstruments(instrumentSymbols);
+
   /**
    * ✅ You can edit from here down in this component.
    * Please feel free to add more components to this file or other files if you want to.
@@ -96,14 +97,29 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
   const leaderRectangles = useMakeSubReel(instruments);
   const tailRectangles = useMakeSubReel(instruments);
 
+  const leaderWidth = leaderRef.current?.getBoundingClientRect()?.width;
+  const maxWidth =
+    leaderWidth && leaderWidth > 1
+      ? leaderWidth
+      : leaderRef.current?.clientWidth;
   return (
-    <div ref={containerRef} className="instrumentReel">
+    <div
+      ref={containerRef}
+      style={{ maxWidth: maxWidth }}
+      className="instrumentReel"
+    >
       <div ref={wrapperRef} className="wrapperForBothSubReels">
         <InstrumentContext.Provider value={instruments}>
-          <div className="subReel" ref={leaderRef}>
+          <div
+            className="subReel"
+            style={{ borderRight: "none" }}
+            ref={leaderRef}
+          >
             {leaderRectangles}
           </div>
-          <div className="subReel">{tailRectangles}</div>
+          <div style={{ borderLeft: "none" }} className="subReel">
+            {tailRectangles}
+          </div>
         </InstrumentContext.Provider>
       </div>
     </div>
