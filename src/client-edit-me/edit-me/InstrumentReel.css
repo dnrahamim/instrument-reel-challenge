@@ -71,3 +71,8 @@
   min-width: 230px;
   justify-content: space-between;
 }
+
+.instrumentRectangle:hover {
+  background-color: #636363;
+  cursor: pointer;
+}

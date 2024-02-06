@@ -71,6 +71,7 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
   const leaderRef = useRef(null as HTMLDivElement | null);
   const marginRef = useRef(0);
   const speed = 0.2; // pixels per ms
+  const hoveringRef = useRef(false);
 
   const advanceReelWrapper = () => {
     if (wrapperRef.current && containerRef.current && leaderRef.current) {
@@ -87,7 +88,9 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      requestAnimationFrame(advanceReelWrapper);
+      if (!hoveringRef.current) {
+        requestAnimationFrame(advanceReelWrapper);
+      }
     }, 1);
     return () => {
       clearInterval(intervalId);
@@ -96,6 +99,12 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
 
   const leaderRectangles = useMakeSubReel(instruments);
   const tailRectangles = useMakeSubReel(instruments);
+  const onMouseEnter = () => {
+    hoveringRef.current = true;
+  };
+  const onMouseLeave = () => {
+    hoveringRef.current = false;
+  };
 
   const leaderWidth = leaderRef.current?.getBoundingClientRect()?.width;
   const maxWidth =
@@ -107,6 +116,8 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
       ref={containerRef}
       style={{ maxWidth: maxWidth }}
       className="instrumentReel"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div ref={wrapperRef} className="wrapperForBothSubReels">
         <InstrumentContext.Provider value={instruments}>
