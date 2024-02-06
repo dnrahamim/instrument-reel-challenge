@@ -30,6 +30,10 @@
   margin-right: 5px;
 }
 
+.quoteBlock {
+  margin-right: 5px;
+}
+
 .instrumentRectangle {
   display: flex;
   flex-flow: row;
@@ -39,4 +43,6 @@
   border-right: solid;
   border-color: #505050;
   background-color: #252525;
+  min-width: 220px;
+  justify-content: space-between;
 }

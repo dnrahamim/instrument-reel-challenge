@@ -8,8 +8,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Instrument, InstrumentSymbol } from "../../common-leave-me";
 import { InstrumentSocketClient } from "./InstrumentSocketClient";
-import { IconImage } from "./IconImage";
+import { InstrumentRectangle } from "./InstrumentRectangle";
 import "./InstrumentReel.css";
+import { InstrumentContext } from "./Contexts";
 
 /**
  * ❌ Please do not edit this
@@ -36,20 +37,10 @@ function useInstruments(instrumentSymbols: InstrumentSymbol[]) {
   return instruments;
 }
 
-const InstrumentRectangle = ({ instrument }: { instrument: Instrument }) => {
-  return (
-    <div className="instrumentRectangle">
-      <IconImage code={instrument.code} />
-      <div className="nameBlock">{instrument.name}</div>
-      <div>{instrument.lastQuote}</div>
-    </div>
-  );
-};
-
 const useMakeSubReel = (instruments: Instrument[]) => {
   return useMemo(() => {
     return instruments.map((instrument) => (
-      <InstrumentRectangle key={instrument.name} {...{ instrument }} />
+      <InstrumentRectangle key={instrument.name} code={instrument.code} />
     ));
   }, [JSON.stringify(instruments.map((i) => i.code))]);
 };
@@ -101,10 +92,12 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
   return (
     <div ref={containerRef} className="instrumentReel">
       <div ref={wrapperRef} className="wrapperForBothSubReels">
-        <div className="subReel" ref={leaderRef}>
-          {leaderRectangles}
-        </div>
-        <div className="subReel">{tailRectangles}</div>
+        <InstrumentContext.Provider value={instruments}>
+          <div className="subReel" ref={leaderRef}>
+            {leaderRectangles}
+          </div>
+          <div className="subReel">{tailRectangles}</div>
+        </InstrumentContext.Provider>
       </div>
     </div>
   );
