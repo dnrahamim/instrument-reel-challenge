@@ -34,7 +34,7 @@ function useInstruments(instrumentSymbols: InstrumentSymbol[]) {
     // fixes the duplication issue that arises
     // when multiple instrument reels are created
     // or even when one is torn down and created fresh
-    const listener = client.listen(setInstruments);
+    const listener = client.listen(instrumentSymbols, setInstruments);
 
     return () => {
       client.unlisten(listener);

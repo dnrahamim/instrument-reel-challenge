@@ -79,12 +79,18 @@ export class InstrumentSocketClient {
     }
   }
 
-  listen(setInstruments: React.Dispatch<React.SetStateAction<Instrument[]>>) {
+  listen(
+    instrumentSymbols: InstrumentSymbol[],
+    setInstruments: React.Dispatch<React.SetStateAction<Instrument[]>>
+  ) {
     // Listen for messages
     const myListener = (event: MessageEvent<any>) => {
       try {
         const data = JSON.parse(event.data) as WebSocketServerMessageJson;
-        setInstruments(data.instruments);
+        const filteredInstruments = data.instruments.filter((instrument) =>
+          instrumentSymbols.indexOf(instrument.code)
+        );
+        setInstruments(filteredInstruments);
       } catch (error) {
         reportError({ message: String(error) });
       }

@@ -26,6 +26,18 @@
   margin-right: 5px;
 }
 
+.eur {
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+}
+.usd {
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  margin-right: 5px;
+}
+
 .nameBlock {
   margin-right: 5px;
 }

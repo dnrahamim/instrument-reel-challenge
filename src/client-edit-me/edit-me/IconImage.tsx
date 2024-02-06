@@ -21,7 +21,12 @@ export const IconImage = ({ code }: { code: InstrumentSymbol }) => {
       src = "stocks/TSLA.svg";
       break;
     case "EURUSD":
-      src = "forex/EUR.svg";
+      return (
+        <div className="flexRow">
+          <img className="eur" src="forex/EUR.svg" />
+          <img className="usd" src="forex/USD.svg" />
+        </div>
+      );
       break;
     default:
     // code block
