@@ -83,23 +83,24 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
    * ❌ Please do not edit this
    */
   const instruments = useInstruments(instrumentSymbols);
-  const containerRef = useRef(null as HTMLDivElement | null);
-  const reelRef = useRef(null as HTMLDivElement | null);
-  const marginRef = useRef(0);
-  const speed = 0.2;
   /**
    * ✅ You can edit from here down in this component.
    * Please feel free to add more components to this file or other files if you want to.
    */
+  const containerRef = useRef(null as HTMLDivElement | null);
+  const reelRef = useRef(null as HTMLDivElement | null);
+  const leaderRef = useRef(null as HTMLDivElement | null);
+  const marginRef = useRef(0);
+  const speed = 0.2;
 
   const moveDivLeft = () => {
-    if (reelRef.current && containerRef.current) {
+    if (reelRef.current && containerRef.current && leaderRef.current) {
       reelRef.current.style.marginLeft = `-${marginRef.current}px`;
       marginRef.current = marginRef.current + speed;
 
       var containerRect = containerRef.current.getBoundingClientRect();
-      var reelRect = reelRef.current.getBoundingClientRect();
-      if (reelRect.right <= containerRect.left) {
+      var leaderRect = leaderRef.current.getBoundingClientRect();
+      if (leaderRect.right <= containerRect.left) {
         marginRef.current = 0;
       }
     }
@@ -117,10 +118,19 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
     ));
   }, [JSON.stringify(instruments.map((i) => i.code))]);
 
+  const tailRectangles = useMemo(() => {
+    return instruments.map((instrument) => (
+      <InstrumentRectangle key={instrument.name} {...{ instrument }} />
+    ));
+  }, [JSON.stringify(instruments.map((i) => i.code))]);
+
   return (
     <div ref={containerRef} className="reelWrapper">
       <div ref={reelRef} className="instrumentReel">
-        {instrumentRectangles}
+        <div className="instrumentReel" ref={leaderRef}>
+          {instrumentRectangles}
+        </div>
+        <div className="instrumentReel">{tailRectangles}</div>
       </div>
     </div>
   );
