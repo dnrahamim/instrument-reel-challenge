@@ -61,13 +61,7 @@ export class InstrumentSocketClient {
    * ✅ You can edit from here down 👇
    */
 
-  subscribe({
-    instrumentSymbols,
-    setInstruments,
-  }: {
-    instrumentSymbols: InstrumentSymbol[];
-    setInstruments: React.Dispatch<React.SetStateAction<Instrument[]>>;
-  }) {
+  subscribe({ instrumentSymbols }: { instrumentSymbols: InstrumentSymbol[] }) {
     const sendSubscribe = () => {
       this._socket.send(
         JSON.stringify({
@@ -83,16 +77,24 @@ export class InstrumentSocketClient {
     } else {
       this._socket.addEventListener("open", sendSubscribe);
     }
+  }
 
+  listen(setInstruments: React.Dispatch<React.SetStateAction<Instrument[]>>) {
     // Listen for messages
-    this._socket.addEventListener("message", (event) => {
+    const myListener = (event: MessageEvent<any>) => {
       try {
         const data = JSON.parse(event.data) as WebSocketServerMessageJson;
         setInstruments(data.instruments);
       } catch (error) {
         reportError({ message: String(error) });
       }
-    });
+    };
+    this._socket.addEventListener("message", myListener);
+    return myListener;
+  }
+
+  unlisten(eventListener: (event: MessageEvent<any>) => void) {
+    this._socket.removeEventListener("message", eventListener);
   }
 
   unsubscribe({

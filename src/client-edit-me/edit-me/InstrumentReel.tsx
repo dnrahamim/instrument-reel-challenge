@@ -16,6 +16,9 @@ import { InstrumentContext } from "./Contexts";
  * ❌ Please do not edit this
  */
 const client = new InstrumentSocketClient();
+client.subscribe({
+  instrumentSymbols: ["BTC", "ETH", "SP500", "US100", "EURUSD", "TSLA", "AAPL"],
+});
 
 /**
  * ❌ Please do not edit this hook name & args
@@ -27,10 +30,14 @@ function useInstruments(instrumentSymbols: InstrumentSymbol[]) {
   const [instruments, setInstruments] = useState([] as Instrument[]);
 
   useEffect(() => {
-    client.subscribe({ instrumentSymbols, setInstruments });
+    // the distinction between listen and subscribe
+    // fixes the duplication issue that arises
+    // when multiple instrument reels are created
+    // or even when one is torn down and created fresh
+    const listener = client.listen(setInstruments);
 
     return () => {
-      client.unsubscribe({ instrumentSymbols });
+      client.unlisten(listener);
     };
   }, []);
 
