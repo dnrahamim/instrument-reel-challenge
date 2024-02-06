@@ -1,4 +1,9 @@
+# A Note from Dorian Rahamim
+
+Thank you very much for the opportunity to do this code challenge. Please enjoy my submission
+
 # Overview
+
 As a member of the Valstro UI Engineering team, you'll be building a multi-window desktop application with complex UI features. Therefore, the purpose of this assessment is to show that you have the fundamentals for building fast reactive UI applications, with modern day best practices.
 
 # Setup
