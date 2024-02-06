@@ -21,16 +21,13 @@ export const InstrumentRectangle = memo(
       }
       return change;
     };
-    const updateLastQuote = () => {
-      if (instrument?.lastQuote) {
-        quoteRef.current = instrument.lastQuote;
-      }
-    };
 
     const percentChange = calculatePercentChange();
 
     useEffect(() => {
-      updateLastQuote();
+      if (instrument?.lastQuote) {
+        quoteRef.current = instrument.lastQuote;
+      }
     }, [JSON.stringify(instruments)]);
 
     return instrument ? (

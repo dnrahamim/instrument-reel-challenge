@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "author": "dnrahamim@gmail.com",
   "scripts": {
     "dev": "vite",
     "dev:server": "nodemon src/server-leave-me/index.ts",

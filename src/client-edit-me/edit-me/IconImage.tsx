@@ -27,7 +27,6 @@ export const IconImage = ({ code }: { code: InstrumentSymbol }) => {
           <img className="usd" src="forex/USD.svg" />
         </div>
       );
-      break;
     default:
     // code block
   }
