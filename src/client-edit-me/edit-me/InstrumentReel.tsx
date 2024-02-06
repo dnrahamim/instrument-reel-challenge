@@ -91,9 +91,9 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
   const reelRef = useRef(null as HTMLDivElement | null);
   const leaderRef = useRef(null as HTMLDivElement | null);
   const marginRef = useRef(0);
-  const speed = 0.2;
+  const speed = 0.2; // pixels per ms
 
-  const moveDivLeft = () => {
+  const advanceReelWrapper = () => {
     if (reelRef.current && containerRef.current && leaderRef.current) {
       reelRef.current.style.marginLeft = `-${marginRef.current}px`;
       marginRef.current = marginRef.current + speed;
@@ -107,12 +107,15 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
   };
 
   useEffect(() => {
-    setInterval(() => {
-      requestAnimationFrame(moveDivLeft);
-    });
+    const intervalId = setInterval(() => {
+      requestAnimationFrame(advanceReelWrapper);
+    }, 1);
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
-  const instrumentRectangles = useMemo(() => {
+  const leaderRectangles = useMemo(() => {
     return instruments.map((instrument) => (
       <InstrumentRectangle key={instrument.name} {...{ instrument }} />
     ));
@@ -128,7 +131,7 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
     <div ref={containerRef} className="instrumentReel">
       <div ref={reelRef} className="wrapperForBothSubReels">
         <div className="subReel" ref={leaderRef}>
-          {instrumentRectangles}
+          {leaderRectangles}
         </div>
         <div className="subReel">{tailRectangles}</div>
       </div>
