@@ -3,6 +3,7 @@ import { InstrumentSymbol } from "../../common-leave-me";
 import { IconImage } from "./IconImage";
 import "./InstrumentReel.css";
 import { InstrumentContext } from "./Contexts";
+import { NumberText } from "./NumberText";
 
 export const InstrumentRectangle = memo(
   ({ code }: { code: InstrumentSymbol }) => {
@@ -18,7 +19,7 @@ export const InstrumentRectangle = memo(
         change =
           (100 * (instrument.lastQuote - quoteRef.current)) / quoteRef.current;
       }
-      return change.toFixed(3);
+      return change;
     };
     const updateLastQuote = () => {
       if (instrument?.lastQuote) {
@@ -34,10 +35,11 @@ export const InstrumentRectangle = memo(
 
     return instrument ? (
       <div className="instrumentRectangle">
-        <IconImage code={instrument.code} />
-        <div className="nameBlock">{instrument.name}</div>
-        <div className="quoteBlock">{instrument.lastQuote}</div>
-        <div>{percentChange}</div>
+        <div className="flexRow">
+          <IconImage code={instrument.code} />
+          <div className="nameBlock">{instrument.name}</div>
+        </div>
+        <NumberText {...{ percentChange, lastQuote: instrument?.lastQuote }} />
       </div>
     ) : null;
   }

@@ -30,8 +30,21 @@
   margin-right: 5px;
 }
 
+.flexRow {
+  display: flex;
+  flex-flow: row;
+}
+
+.positiveChange {
+  color: lightgreen;
+}
+
+.negativeChange {
+  color: red;
+}
+
 .quoteBlock {
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
 .instrumentRectangle {
@@ -43,6 +56,6 @@
   border-right: solid;
   border-color: #505050;
   background-color: #252525;
-  min-width: 220px;
+  min-width: 230px;
   justify-content: space-between;
 }
